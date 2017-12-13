@@ -57,7 +57,7 @@ function __ini_app(\Owl\Application $app)
     ]);
 
     $router->delegate('/admin',require_once ROOT_DIR . '/src/Admin/Router.php');
-    $router->delegate('/api',require_once ROOT_DIR . '/src/Api/Router.php');
+    //$router->delegate('/api',require_once ROOT_DIR . '/src/Api/Router.php');
 
     $app->middleware(function ($request, $response) use ($router) {
         $router->execute($request, $response);
