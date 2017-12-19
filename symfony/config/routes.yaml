@@ -1,0 +1,10 @@
+#index:
+#    path: /
+#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+
+admin:
+    resource: '@AdminBundle/Resources/config/routes.yaml'
+    prefix:   /admin
+
+home:
+    resource: '@HomeBundle/Resources/config/routes.yaml'
