@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -37,14 +38,12 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+
         if ($exception instanceof AdminExption) {
             $data = [
                 'status' => $exception->getCode(),
                 'message' => $exception->getMessage(),
             ];
-            if (env('APP_DEBUG')) {
-                $data['trace'] = $exception->getTraceAsString();
-            }
             $request = new Request();
             if ($request->ajax()) {
                 return reponse()->json($data);
@@ -63,5 +62,16 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    /**
+     * 验证失败 触发
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return response()->json([
+            'status' => $exception->getCode(),
+            'message' => $exception->error(),
+        ], $exception->status);
     }
 }

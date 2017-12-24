@@ -228,4 +228,19 @@ return [
 
     ],
 
+    /**
+     * rbac 请求白名单  [route地址/action]
+     */
+
+    'rbac_white' => [
+        '/admin/index/index',
+        '/admin/index/logout',
+        '/admin/index/error'
+    ],
+
+    'menu_icon' => [
+        '权限管理' => 'fa fa-tasks',
+        '会员管理' => 'fa fa-user'
+    ],
+
 ];

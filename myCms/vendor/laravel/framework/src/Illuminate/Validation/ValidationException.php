@@ -46,9 +46,9 @@ class ValidationException extends Exception
     /**
      * Create a new exception instance.
      *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @param  string  $errorBag
+     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @param  \Symfony\Component\HttpFoundation\Response $response
+     * @param  string $errorBag
      * @return void
      */
     public function __construct($validator, $response = null, $errorBag = 'default')
@@ -63,7 +63,7 @@ class ValidationException extends Exception
     /**
      * Create a new validation exception from a plain array of messages.
      *
-     * @param  array  $messages
+     * @param  array $messages
      * @return static
      */
     public static function withMessages(array $messages)
@@ -88,9 +88,19 @@ class ValidationException extends Exception
     }
 
     /**
+     * get first error message
+     *
+     * @return string
+     */
+    public function error()
+    {
+        return $this->validator->errors()->first();
+    }
+
+    /**
      * Set the HTTP status code to be used for the response.
      *
-     * @param  int  $status
+     * @param  int $status
      * @return $this
      */
     public function status($status)
@@ -103,7 +113,7 @@ class ValidationException extends Exception
     /**
      * Set the error bag on the exception.
      *
-     * @param  string  $errorBag
+     * @param  string $errorBag
      * @return $this
      */
     public function errorBag($errorBag)
@@ -116,7 +126,7 @@ class ValidationException extends Exception
     /**
      * Set the URL to redirect to on a validation error.
      *
-     * @param  string  $url
+     * @param  string $url
      * @return $this
      */
     public function redirectTo($url)
