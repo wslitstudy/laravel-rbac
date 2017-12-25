@@ -17,8 +17,8 @@ class CreateManageMenuTable extends Migration
             $table->increments('id');
             $table->string('path',100);
             $table->tinyInteger('level');
-            $table->tinyInteger('is_menu');
             $table->integer('sort');
+            $table->integer('parent_id')->default(0);
         });
     }
 
