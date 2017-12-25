@@ -1,3 +1,0 @@
-home:
-  path: login
-  defaults: { _controller: 'App\AdminBundle\Controller\LoginController::index' }
