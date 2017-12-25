@@ -2,7 +2,7 @@
 
 Route::Resource('/admin/login', 'Admin\LoginController');
 
-Route::get('/admin', 'IndexController@index')->middleware(['admin.auth']);
+Route::get('admins', 'IndexController@index')->middleware(['admin.auth']);
 
 Route::namespace('Admin')->middleware(['admin.auth'])->prefix('admin')->group(function () {
 
