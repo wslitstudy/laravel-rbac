@@ -23,7 +23,7 @@ class LoginController extends Controller
         if ($service->doLogin($request->input('username'), $request->input('password'))) {
 
             return response()->json([
-                'toUrl' => '/admin'
+                'toUrl' => '/admins'
             ]);
         }
     }
