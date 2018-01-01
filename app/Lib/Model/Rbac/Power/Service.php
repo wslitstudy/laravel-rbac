@@ -66,21 +66,19 @@ class Service
 
         $cacheKey = 'user:menu:' . $session->getManageId();
 
-        $leftMenus = Cache::store('file')->get($cacheKey, false);
-
-        if (!$leftMenus) {
+        $value = Cache::remember($cacheKey, 20, function () use ($session) {
             $menuIds = $session->getMenus();
 
             if (in_array('all', $menuIds)) {
-                return $this->getAllMenus();
+                $leftMenus = $this->getAllMenus();
+            } else {
+                $leftMenus = $this->getAllMenus($menuIds);
             }
 
-            $leftMenus = $this->getAllMenus($menuIds);
+            return $leftMenus;
+        });
 
-            Cache::store('file')->put($cacheKey, json_encode($leftMenus));
-        }
-
-        return $leftMenus;
+        return $value;
     }
 
 

@@ -26,28 +26,48 @@ class IniMeau extends Command
         echo "crate menu start... \n";
 
         $controllerPath = app_path('Http\Controllers\Admin');
-        $dir = opendir($controllerPath);
-        while ($file = readdir($dir)) {
+        $allClass = $this->getAllClass($controllerPath);
+        foreach ($allClass as $classDir) {
+            $namespace = trim(substr($classDir, strlen($controllerPath) + 1));
+            //echo $namespace;
+            $this->createMenuOrPower($namespace);
+        }
+        echo "crate menu end... \n";
+    }
+
+    public function getAllClass($path)
+    {
+        static $data = [];
+        $dir = opendir($path);
+        while (($file = readdir($dir)) !== false) {
             if ($file != '.' && $file != '..') {
-                $fileName = substr($file, 0, strrpos($file, '.'));
-                if (!in_array($fileName, self::WHITE_ARR)) {
-                    $this->createMenuOrPower($fileName);
+                if (is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+                    $this->getAllClass($path . DIRECTORY_SEPARATOR . $file);
+                } else {
+                    $fileName = substr($file, 0, strrpos($file, '.'));
+                    if (!in_array($fileName, self::WHITE_ARR)) {
+                        $data[] = $path . DIRECTORY_SEPARATOR . $fileName . "\n";
+
+                    }
                 }
+
             }
         }
-
-        echo "crate menu end... \n";
+        closedir($dir);
+        return $data;
     }
 
     private function createMenuOrPower($className)
     {
         $namespace = '\App\Http\Controllers\Admin\\' . $className;
+        //$namespace = '\App\Http\Controllers\Admin\Member\HandleController' ;
         $obj = new $namespace();
         $class = new \ReflectionClass($obj);
 
         $methods = $class->getMethods();
-        $className = $class->getShortName();
+        //$classNames = $class->getShortName();
         $route = substr($className, 0, strlen($className) - 10);
+        $route = str_replace('\\', '/', $route);
 
         foreach ($methods as $method) {
             if ($method->isPublic() && $method->class == 'App\Http\Controllers\Admin\\' . $className) {
